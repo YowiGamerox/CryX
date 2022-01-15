@@ -1,5 +1,6 @@
 import string
 import os
+import shutil
 
 #& My Functions
 #* The function that encrypt the input text
@@ -35,12 +36,12 @@ cryxFolder_Exist = os.path.exists(cryxFolder)
 
 
 #& Encrypt or Decrypt selection
-#* Asks you if you want to enrypt or dencrypt
-selection = input("E or D ? ")
+#* Asks you if you want to enrypt or decrypt
+cryxSelection = input("Do you wanna Encrypt or Decrypt? (E or D) : ")
 
 #& Encrypt way
 #* If your answer was Encrypt
-if selection == "E":
+if cryxSelection == "E":
     #^ The Inputs
     # Inputs the plain text
     plain_text = input("Text: ")
@@ -77,12 +78,12 @@ if selection == "E":
         # If it exist
         if cryxFolder_Exist == True :
             print(">> The cryxFolder has been created")
-            cryxFile("encrypted.txt", "w+", encryptedText)
+            cryxFile("encrypted.txt", "w+", encryptedText, shift)
             print('>> The "encrypted.txt" file has been created')
 
 #& Decrypt way
 #* If your answer was Decrypt
-if selection == "D":
+if cryxSelection == "D":
     #^ The Inputs
     # Inputs the encrypted text
     encrypted_text = input("Encrypted Text: ")
@@ -117,3 +118,48 @@ if selection == "D":
             print(">> The cryxFolder has been created")
             cryxFile("decrypted.txt", "w+", decryptedText)
             print('>> The "decrypted.txt" file has been created')    
+
+
+#& Email way
+from email.message import EmailMessage
+message = EmailMessage()
+
+#& Email Selection
+emailSelection = input(">> Should I send it by email? (Y or N) : ")
+
+#* If Yes
+if (emailSelection == "Y") :
+    sender = input(">> Write the email sender (your-name@gmail.com) : ")
+    recipient = input(">> Write the email recipient (example@example.com) : ")
+
+    message['From'] = sender
+    message['To'] = recipient
+
+    message['Subject'] = input(">> Write the email subject (Title) : " )
+    body = input(">> Write the email body : " )
+    message.set_content(body)
+    print("\n >> This is how your email message looks: " + '\n'  + str(message))
+
+    import mimetypes
+    mime_type, _ = mimetypes.guess_type('encrypted.txt')
+    print(mime_type)
+
+    mime_type, mime_subtype = mime_type.split('/')
+
+    with open("encrypted.txt", "rb") as file :
+        message.add_attachment(file.read(),
+        maintype = mime_type,
+        subtype = mime_subtype,
+        filename = "encrypted.txt")
+
+    #& SMTP Server (Simple Mail Transfer Protocol)
+    import smtplib
+    import getpass
+    mail_server = smtplib.SMTP_SSL("smtp.gmail.com")
+    print("NOTE: To work you have to enable less secure app from gmail by using this link https://myaccount.google.com/lesssecureapps")
+    userPassword = getpass.getpass()
+    mail_server.login(sender, userPassword)
+    mail_server.set_debuglevel(1)
+    mail_server.send_message(message)
+    mail_server.quit()
+    print(">> The message has been sent!")
