@@ -12,6 +12,17 @@ def cryx(text, shift, alphabets) :
     table = str.maketrans(final_alphabet ,final_shifted_alphabet)
     return text.translate(table)
 
+def crypt(plain_text, shift, typeText, encryptedText) :
+    if (1 <= shift) :
+            if (shift > 9) :
+                shift = shift % 26
+                if (shift == 0) :
+                    shift = shift + 4
+            encryptedText = cryx(plain_text, shift, [string.ascii_lowercase, string.ascii_uppercase, string.punctuation, string.digits])
+            print(">> Your " + typeText + " text is: " + encryptedText)    
+    elif (shift < 1) :
+            print("ERROR: The shift number can't be 0 or lower")
+
 def cryxFile(filename, mode, cryxText, shift) :
     os.chdir(cryxFolder)
     f = open(filename, mode)
@@ -31,13 +42,9 @@ if (scan_or_send_Selection == "S") :
     print(contents)
     encrypted_text = contents[0]
     shift = 26 - int(contents[1])
-    
-    if (shift > 9) :
-        shift = shift % 26
-        if (shift == 0) :
-                shift = shift + 4
-        decryptedText = cryx(encrypted_text, shift, [string.ascii_lowercase, string.ascii_uppercase, string.punctuation, string.digits])
-        print(">> Your decrypted text is: " + decryptedText)
+    typeText = "decrypted"
+    encryptedText = cryx(encrypted_text, shift, [string.ascii_lowercase, string.ascii_uppercase, string.punctuation, string.digits])
+    crypt(encrypted_text, shift, typeText, encryptedText)
 
 elif (scan_or_send_Selection == "C") :
         
@@ -46,15 +53,10 @@ elif (scan_or_send_Selection == "C") :
     if cryxSelection == "E":        
         plain_text = input("Text: ")
         shift = int(input("Shift: "))
-        if (1 <= shift) :
-            if (shift > 9) :
-                shift = shift % 26
-                if (shift == 0) :
-                    shift = shift + 4
-            encryptedText = cryx(plain_text, shift, [string.ascii_lowercase, string.ascii_uppercase, string.punctuation, string.digits])
-            print(">> Your encrypted text is: " + encryptedText)    
-        elif (shift < 1) :
-            print("ERROR: The shift number can't be 0 or lower") 
+        encryptedText = cryx(plain_text, shift, [string.ascii_lowercase, string.ascii_uppercase, string.punctuation, string.digits])
+        typeText = "encrypted"
+        crypt(plain_text, shift, typeText, encryptedText)
+         
 
         if cryxFolder_Exist == True :
             cryxFile("encrypted.txt", "w+", encryptedText, shift)
