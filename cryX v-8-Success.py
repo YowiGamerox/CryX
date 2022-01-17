@@ -17,22 +17,51 @@ def cryxFile(filename, mode, cryxText, shift) :
     f.write(cryxText + '\n' + str(shift))
     f.close()
 
+def get_download_path():
+    if os.name == "nt":
+        import winreg
+        sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
+        downloads_guid = '{374DE290-123F-4565-9164-39C4925E467B}'
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
+            location = winreg.QueryValueEx(key, downloads_guid)[0]
+        return location
+    else:
+        return os.path.join(os.path.expanduser("~"), "downloads")
+
+
 currentDirectory = os.getcwd()
 cryxFolder = currentDirectory + "\cryxFolder"
 cryxFolder_Exist = os.path.exists(cryxFolder)
-encryptFile = cryxFolder + "\encrypted.txt"
+encryptFile = cryxFolder + "\cryX-encrypted.txt"
 encryptFile_Exist = os.path.exists(encryptFile)
+downloadsFolder = get_download_path()
+file_in_downloadsFolder = downloadsFolder + "\cryX-encrypted.txt"
+file_in_downloadsFolder_Exist = os.path.exists(file_in_downloadsFolder)
+downloadsMode = False
 
 mainSelection = input("<< (～￣▽￣)～ What do you wanna do? (C/S/D) : ")
 
 if (mainSelection == "S") :
-    print(">> Scan Mode selected ㄟ( ▔, ▔ )ㄏ")
+    print(">> ㄟ( ▔, ▔ )ㄏ Scan Mode selected")
+
+    if (encryptFile_Exist == False) :
+        print('>> The "cryX-encrypted.txt" file', "doesn't exist at", cryxFolder)
+        if (cryxFolder_Exist == False):
+            print(">> (￣、￣) The folder doesn't even exist")
+        print(">> (￣_,￣ ) HeHe I'm searching for it in your Downloads folder")
+
+        if(file_in_downloadsFolder_Exist == True):
+            encryptFile_Exist = True
+            downloadsMode = True
+        else :
+            print(">> (┬┬n┬┬) There's no file")
 
     if (encryptFile_Exist == True) :
-        print('>> "encrypted.txt" file found')
-
-        os.chdir(cryxFolder)
-        f = open("encrypted.txt", "r")
+        if(downloadsMode == False):
+            os.chdir(cryxFolder)
+        if(downloadsMode == True):
+            os.chdir(downloadsFolder)
+        f = open("cryX-encrypted.txt", "r")
         contents = f.readlines()
         encrypted_text = contents[0]
         shift = 26 - int(contents[1])
@@ -40,13 +69,8 @@ if (mainSelection == "S") :
         if (shift == 0) :
                 shift = shift + 4
         decryptedText = cryx(encrypted_text, shift, [string.ascii_lowercase, string.ascii_uppercase, string.punctuation, string.digits])
-        print(">> Your decrypted text is:", decryptedText)
+        print(">>（￣︶￣）Your decrypted text is:", decryptedText)
         
-    elif (encryptFile_Exist == False) :
-        print('>> The "encrypted.txt" file', "doesn't exist at", cryxFolder)
-
-
-
 elif (mainSelection == "C") :
     cryxSelection = input("<< Fella, do you wanna Encrypt or Decrypt? (E/D) : ")
 
@@ -64,16 +88,16 @@ elif (mainSelection == "C") :
             print("ERROR: The shift number can't be 0 or lower （︶^︶）") 
 
         if cryxFolder_Exist == True :
-            cryxFile("encrypted.txt", "w+", encryptedText, shift)
-            print('// The file "encrypted.txt" has been created')
+            cryxFile("cryX-encrypted.txt", "w+", encryptedText, shift)
+            print('// The file "cryX-encrypted.txt" has been created in', currentDirectory)
                 
         if cryxFolder_Exist == False :    
             os.makedirs(cryxFolder)
             cryxFolder_Exist = True
             if cryxFolder_Exist == True :
                 print('// The folder "cryxFolder" has been created')
-                cryxFile("encrypted.txt", "w+", encryptedText, shift)
-                print('// The file "encrypted.txt" has been created')
+                cryxFile("cryX-encrypted.txt", "w+", encryptedText, shift)
+                print('// The file "cryX-encrypted.txt" has been created')
 
     if cryxSelection == "D":        
         encrypted_text = input("<< Encrypted Text: ")
@@ -118,16 +142,16 @@ elif (mainSelection == "C") :
         print("\n >> This is how your email message looks: " + '\n'  + str(message))
 
         import mimetypes
-        mime_type, _ = mimetypes.guess_type('encrypted.txt')
+        mime_type, _ = mimetypes.guess_type('cryX-encrypted.txt')
         print(mime_type)
 
         mime_type, mime_subtype = mime_type.split('/')
 
-        with open("encrypted.txt", "rb") as file :
+        with open("cryX-encrypted.txt", "rb") as file :
             message.add_attachment(file.read(),
             maintype = mime_type,
             subtype = mime_subtype,
-            filename = "encrypted.txt")
+            filename = "cryX-encrypted.txt")
 
         
         import smtplib
