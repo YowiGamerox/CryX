@@ -45,15 +45,14 @@ if (scan_or_send_Selection == "S") :
     encrypted_text = contents[0]
     shift = 26 - int(contents[1])
     
-    if (shift > 9) :
-        # Modules shift
-        shift = shift % 26
-        # If the result of the module is 0
-        if (shift == 0) :
-                shift = shift + 4
-        # Decrypt it and print the result
-        decryptedText = cryx(encrypted_text, shift, [string.ascii_lowercase, string.ascii_uppercase, string.punctuation, string.digits])
-        print(">> Your decrypted text is: " + decryptedText)
+    # Modules shift
+    shift = shift % 26
+    # If the result of the module is 0
+    if (shift == 0) :
+            shift = shift + 4
+    # Decrypt it and print the result
+    decryptedText = cryx(encrypted_text, shift, [string.ascii_lowercase, string.ascii_uppercase, string.punctuation, string.digits])
+    print(">> Your decrypted text is: " + decryptedText)
 
 
 elif (scan_or_send_Selection == "C") :
