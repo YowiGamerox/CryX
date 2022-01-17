@@ -23,7 +23,7 @@ cryxFolder_Exist = os.path.exists(cryxFolder)
 encryptFile = cryxFolder + "\encrypted.txt"
 encryptFile_Exist = os.path.exists(encryptFile)
 
-mainSelection = input(">> What do you wanna do? (C/S/D) (～￣▽￣)～")
+mainSelection = input("<< (～￣▽￣)～ What do you wanna do? (C/S/D) : ")
 
 if (mainSelection == "S") :
     print(">> Scan Mode selected ㄟ( ▔, ▔ )ㄏ")
@@ -59,21 +59,21 @@ elif (mainSelection == "C") :
                 if (shift == 0) :
                     shift = shift + 4
             encryptedText = cryx(plain_text, shift, [string.ascii_lowercase, string.ascii_uppercase, string.punctuation, string.digits])
-            print(">> Your encrypted text is:", encryptedText)
+            print(">>（￣︶￣）Your encrypted text is:", encryptedText)
         elif (shift < 1) :
             print("ERROR: The shift number can't be 0 or lower （︶^︶）") 
 
         if cryxFolder_Exist == True :
             cryxFile("encrypted.txt", "w+", encryptedText, shift)
-            print('>> The "encrypted.txt" file has been created')
+            print('// The file "encrypted.txt" has been created')
                 
         if cryxFolder_Exist == False :    
             os.makedirs(cryxFolder)
             cryxFolder_Exist = True
             if cryxFolder_Exist == True :
-                print(">> The cryxFolder has been created")
+                print('// The folder "cryxFolder" has been created')
                 cryxFile("encrypted.txt", "w+", encryptedText, shift)
-                print('>> The "encrypted.txt" file has been created')
+                print('// The file "encrypted.txt" has been created')
 
     if cryxSelection == "D":        
         encrypted_text = input("<< Encrypted Text: ")
@@ -85,25 +85,25 @@ elif (mainSelection == "C") :
             if (shift == 0) :
                 shift = shift + 4
         decryptedText = cryx(encrypted_text, shift, [string.ascii_lowercase, string.ascii_uppercase, string.punctuation, string.digits])
-        print(">> Your decrypted text is: " + decryptedText)
+        print(">>（￣︶￣）Your decrypted text is: " + decryptedText)
 
         if cryxFolder_Exist == True :
             cryxFile("decrypted.txt", "w+", decryptedText, shift)
-            print('>> The "decrypted.txt" file has been created')        
+            print('// The file "decrypted.txt" has been created')        
 
         if cryxFolder_Exist == False :
             os.makedirs(cryxFolder)
             cryxFolder_Exist = True
             if cryxFolder_Exist == True :
-                print(">> The cryxFolder has been created")
+                print('// The folder "cryxFolder" has been created')
                 cryxFile("decrypted.txt", "w+", decryptedText)
-                print('>> The "decrypted.txt" file has been created')    
+                print('// The file "decrypted.txt" has been created')    
 
     
     from email.message import EmailMessage
     message = EmailMessage()
     
-    emailSelection = input("<< Should I send it by email? (Y or N) : ")
+    emailSelection = input("<< (✿◡‿◡) Should I send it by email for you? (Y or N) : ")
     
     if (emailSelection == "Y") :
         sender = input("<< Write the email sender (your-name@gmail.com) : ")
@@ -143,6 +143,9 @@ elif (mainSelection == "C") :
 
         shutil.rmtree(cryxFolder)
         print(">> I deleted the cryxFolder for you ( •̀ ω •́ )✧")
+
+        if (emailSelection == "N") :
+            print(">> (≧∇≦)ﾉ Okay, have a nice day!")
 
 if (mainSelection == "D") :
     shutil.rmtree(cryxFolder)
