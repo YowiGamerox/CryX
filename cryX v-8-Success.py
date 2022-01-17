@@ -139,12 +139,12 @@ elif (mainSelection == "C") :
         message['Subject'] = input("<< Write the email subject (Title) : " )
         body = input(">> Write the email body : " )
         message.set_content(body)
-        print("\n >> This is how your email message looks: " + '\n'  + str(message))
+        ask_preview = input("<< (◔◡◔) Do you wanna see a preview of your email before sending it? (Y/N)")
+        if (ask_preview == "Y"):
+            print("\n >> This is how your email message looks: " + '\n'  + str(message))
 
         import mimetypes
         mime_type, _ = mimetypes.guess_type('cryX-encrypted.txt')
-        print(mime_type)
-
         mime_type, mime_subtype = mime_type.split('/')
 
         with open("cryX-encrypted.txt", "rb") as file :
@@ -168,8 +168,8 @@ elif (mainSelection == "C") :
         shutil.rmtree(cryxFolder)
         print(">> I deleted the cryxFolder for you ( •̀ ω •́ )✧")
 
-        if (emailSelection == "N") :
-            print(">> (≧∇≦)ﾉ Okay, have a nice day!")
+    if (emailSelection == "N") :
+        print(">> (≧∇≦)ﾉ Okay, have a nice day!")
 
 if (mainSelection == "D") :
     shutil.rmtree(cryxFolder)

@@ -1,0 +1,21 @@
+The first question asks you if you want to **Create a file**, **Scan a file** or **Delete the entire file folder**
+
+* Creating with **C**
+* Scanning with **S**
+* Deleting with **D**
+
+-- Creation --
+The program asks you if you want to *Encrypt* or *Uncrypt* (then it will create a file with the content)
+You answer with **E** for *Encrypt* or **U** for *Uncrypt*.
+
+It will input the text to encrypt or decrypt and a shift.
+The shift is a number that works as a password. 
+(The shift is a number that moves the characters as many positions the number is)
+
+After that, it will ask you if you want to send an email with the content to someone. (It will do it for you)
+
+You have to write:
+* The email *sender* (by default your email)
+* The email *recipient* (the person who it will receive the email)
+* The email *subject* (the title of the email)
+* The email *body* (the message that it will appear in your email) 
