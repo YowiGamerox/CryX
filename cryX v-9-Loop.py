@@ -89,18 +89,14 @@ while Exit == False :
                 print(">>（￣︶￣）Your encrypted text is:", encryptedText)
             elif (shift < 1) :
                 print("ERROR: The shift number can't be 0 or lower （︶^︶）") 
-
-            if cryxFolder_Exist == True :
-                cryxFile("cryX-encrypted.txt", "w+", encryptedText, shift)
-                print('// The file "cryX-encrypted.txt" has been created in', currentDirectory)
                     
             if cryxFolder_Exist == False :    
                 os.makedirs(cryxFolder)
+                print('// The folder "cryxFolder" has been created')
                 cryxFolder_Exist = True
-                if cryxFolder_Exist == True :
-                    print('// The folder "cryxFolder" has been created')
+            if cryxFolder_Exist == True :
                     cryxFile("cryX-encrypted.txt", "w+", encryptedText, shift)
-                    print('// The file "cryX-encrypted.txt" has been created')
+                    print('// The file "cryX-encrypted.txt" has been created in', currentDirectory)
 
         if cryxSelection == "D":        
             encrypted_text = input("<< Encrypted Text: ")
