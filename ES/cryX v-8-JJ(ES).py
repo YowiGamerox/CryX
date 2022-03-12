@@ -39,22 +39,22 @@ file_in_downloadsFolder = downloadsFolder + "\cryX-encrypted.txt"
 file_in_downloadsFolder_Exist = os.path.exists(file_in_downloadsFolder)
 downloadsMode = False
 
-mainSelection = input("<< (～￣▽￣)～ What do you wanna do? (C/S/D) : ")
+mainSelection = input("<< (～￣▽￣)～ ¿Qué quieres hacer? (C/S/D) : ")
 
 if (mainSelection == "S") :
-    print(">> ㄟ( ▔, ▔ )ㄏ Scan Mode selected")
+    print(">> ㄟ( ▔, ▔ )ㄏ Modo Escaneo seleccionado")
 
     if (encryptFile_Exist == False) :
-        print('>> The "cryX-encrypted.txt" file', "doesn't exist at", cryxFolder)
+        print('>> El archivo "cryX-encrypted.txt"', "no existe en", cryxFolder)
         if (cryxFolder_Exist == False):
-            print(">> (￣、￣) The folder doesn't even exist")
-        print(">> (￣_,￣ ) HeHe I'm searching for it in your Downloads folder")
+            print(">> (￣、￣) La carpeta ni siquiera existe")
+        print(">> (￣_,￣ ) HeHe Como alternativa, lo estoy buscando en tu carpeta de Descargas")
 
         if(file_in_downloadsFolder_Exist == True):
             encryptFile_Exist = True
             downloadsMode = True
         else :
-            print(">> (┬┬n┬┬) There's no file")
+            print(">> (┬┬n┬┬) No hay ningún archivo")
 
     if (encryptFile_Exist == True) :
         if(downloadsMode == False):
@@ -69,14 +69,14 @@ if (mainSelection == "S") :
         if (shift == 0) :
                 shift = shift + 4
         decryptedText = cryx(encrypted_text, shift, [string.ascii_lowercase, string.ascii_uppercase, string.punctuation, string.digits])
-        print(">>（￣︶￣）Your decrypted text is:", decryptedText)
+        print(">>（￣︶￣）Tu texto desencriptado es:", decryptedText)
         input()
         
 elif (mainSelection == "C") :
-    cryxSelection = input("<< Fella, do you wanna Encrypt or Decrypt? (E/D) : ")
+    cryxSelection = input("<< Amigo, ¿quieres Encriptar o Desencriptar? (E/D) : ")
 
     if cryxSelection == "E":        
-        plain_text = input("Text: ")
+        plain_text = input("Texto: ")
         shift = int(input("Shift: "))
         if (1 <= shift) :
             if (shift > 9) :
@@ -84,24 +84,24 @@ elif (mainSelection == "C") :
                 if (shift == 0) :
                     shift = shift + 4
             encryptedText = cryx(plain_text, shift, [string.ascii_lowercase, string.ascii_uppercase, string.punctuation, string.digits])
-            print(">>（￣︶￣）Your encrypted text is:", encryptedText)
+            print(">>（￣︶￣）Tu texto encriptado es:", encryptedText)
         elif (shift < 1) :
-            print("ERROR: The shift number can't be 0 or lower （︶^︶）") 
+            print("ERROR: El numero de cambio (shift) no puede ser 0 o menor （︶^︶）") 
 
         if cryxFolder_Exist == True :
             cryxFile("cryX-encrypted.txt", "w+", encryptedText, shift)
-            print('// The file "cryX-encrypted.txt" has been created in', currentDirectory)
+            print('// El archivo "cryX-encrypted.txt" ha sido creado en', currentDirectory)
                 
         if cryxFolder_Exist == False :    
             os.makedirs(cryxFolder)
             cryxFolder_Exist = True
             if cryxFolder_Exist == True :
-                print('// The folder "cryxFolder" has been created')
+                print('// La carpeta "cryxFolder" ha sido creada')
                 cryxFile("cryX-encrypted.txt", "w+", encryptedText, shift)
-                print('// The file "cryX-encrypted.txt" has been created')
+                print('// El archivo "cryX-encrypted.txt" ha sido creado')
 
     if cryxSelection == "D":        
-        encrypted_text = input("<< Encrypted Text: ")
+        encrypted_text = input("<< Texto Encriptado: ")
         shift = int(input("<< Shift: "))
         shift = 26 - shift
         
@@ -110,39 +110,39 @@ elif (mainSelection == "C") :
             if (shift == 0) :
                 shift = shift + 4
         decryptedText = cryx(encrypted_text, shift, [string.ascii_lowercase, string.ascii_uppercase, string.punctuation, string.digits])
-        print(">>（￣︶￣）Your decrypted text is: " + decryptedText)
+        print(">>（￣︶￣）Tu texto desencriptado es: " + decryptedText)
 
         if cryxFolder_Exist == True :
             cryxFile("decrypted.txt", "w+", decryptedText, shift)
-            print('// The file "decrypted.txt" has been created')        
+            print('// El archivo "decrypted.txt" ha sido creado')        
 
         if cryxFolder_Exist == False :
             os.makedirs(cryxFolder)
             cryxFolder_Exist = True
             if cryxFolder_Exist == True :
-                print('// The folder "cryxFolder" has been created')
+                print('// La carpeta "cryxFolder" ha sido creada')
                 cryxFile("decrypted.txt", "w+", decryptedText)
-                print('// The file "decrypted.txt" has been created')    
+                print('// El archivo "decrypted.txt" ha sido creado')    
 
     
     from email.message import EmailMessage
     message = EmailMessage()
     
-    emailSelection = input("<< (✿◡‿◡) Should I send it by email for you? (Y or N) : ")
+    emailSelection = input("<< (✿◡‿◡) ¿Debería enviarlo por email por tí? (Y or N) : ")
     
     if (emailSelection == "Y") :
-        sender = input("<< Write the email sender (your-name@gmail.com) : ")
-        recipient = input("<< Write the email recipient (example@example.com) : ")
+        sender = input("<< Introduce el email del emisor (your-name@gmail.com) : ")
+        recipient = input("<< Introduce el email del receptor (example@example.com) : ")
 
         message['From'] = sender
         message['To'] = recipient
 
-        message['Subject'] = input("<< Write the email subject (Title) : " )
-        body = input(">> Write the email body : " )
+        message['Subject'] = input("<< Introduce el título del email (Título) : " )
+        body = input(">> Introduce el cuerpo del email : " )
         message.set_content(body)
-        ask_preview = input("<< (◔◡◔) Do you wanna see a preview of your email before sending it? (Y/N)")
+        ask_preview = input("<< (◔◡◔) ¿Quieres ver una vista previa de tu email antes de enviarlo? (Y/N)")
         if (ask_preview == "Y"):
-            print("\n >> This is how your email message looks: " + '\n'  + str(message))
+            print("\n >> Así es como se ve tu email: " + '\n'  + str(message))
 
         import mimetypes
         mime_type, _ = mimetypes.guess_type('cryX-encrypted.txt')
@@ -158,20 +158,22 @@ elif (mainSelection == "C") :
         import smtplib
         import getpass
         mail_server = smtplib.SMTP_SSL("smtp.gmail.com")
-        print("!NOTE: To work you have to enable less secure app from gmail by using this link https://myaccount.google.com/lesssecureapps")
+        print("!NOTE: Para que funcione tienes que activar la funcion Less Secure App de gmail usando este enlace https://myaccount.google.com/lesssecureapps")
         userPassword = getpass.getpass()
         mail_server.login(sender, userPassword)
         mail_server.set_debuglevel(1)
         mail_server.send_message(message)
         mail_server.quit()
-        print(">> The message has been sent! ╰(*°▽°*)╯")
+        print(">> ¡Se ha enviado el mensaje! ╰(*°▽°*)╯")
 
         shutil.rmtree(cryxFolder)
-        print(">> I deleted the cryxFolder for you ( •̀ ω •́ )✧")
+        print(">> He borrado la carpeta cryxFolder por tí ( •̀ ω •́ )✧")
 
     if (emailSelection == "N") :
-        print(">> (≧∇≦)ﾉ Okay, have a nice day!")
+        print(">> (≧∇≦)ﾉ Okay, ¡que tengas un buen día!")
+        input()
 
 if (mainSelection == "D") :
     shutil.rmtree(cryxFolder)
-    print(">> I deleted the cryxFolder for you ( •̀ ω •́ )✧")
+    print(">> He borrado la carpeta cryxFolder por tí ( •̀ ω •́ )✧")
+    input()

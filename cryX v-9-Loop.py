@@ -1,45 +1,47 @@
-Exit = False
-while Exit == False :
+import string
+import os
+import shutil
 
-    import string
-    import os
-    import shutil
+currentDirectory = os.getcwd()
+cryxFolder = currentDirectory + "\cryxFolder"
+cryxFolder_Exist = os.path.exists(cryxFolder)
+encryptFile = cryxFolder + "\cryX-encrypted.txt"
+encryptFile_Exist = os.path.exists(encryptFile)
+        
+def cryx(text, shift, alphabets) :    
+    def shift_alphabet(alphabet):
+        return alphabet[shift:] + alphabet[:shift]
+    shifted_alphabets = tuple(map(shift_alphabet, alphabets))
+    final_alphabet = ''.join(alphabets)
+    final_shifted_alphabet = ''.join(shifted_alphabets)
+    table = str.maketrans(final_alphabet ,final_shifted_alphabet)
+    return text.translate(table)
 
-    def cryx(text, shift, alphabets) :    
-        def shift_alphabet(alphabet):
-            return alphabet[shift:] + alphabet[:shift]
-        shifted_alphabets = tuple(map(shift_alphabet, alphabets))
-        final_alphabet = ''.join(alphabets)
-        final_shifted_alphabet = ''.join(shifted_alphabets)
-        table = str.maketrans(final_alphabet ,final_shifted_alphabet)
-        return text.translate(table)
+def cryxFile(filename, mode, cryxText, shift) :
+    os.chdir(cryxFolder)
+    f = open(filename, mode)
+    f.write(cryxText + '\n' + str(shift))
+    f.close()
 
-    def cryxFile(filename, mode, cryxText, shift) :
-        os.chdir(cryxFolder)
-        f = open(filename, mode)
-        f.write(cryxText + '\n' + str(shift))
-        f.close()
-
-    def get_download_path():
-        if os.name == "nt":
-            import winreg
-            sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
-            downloads_guid = '{374DE290-123F-4565-9164-39C4925E467B}'
-            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
-                location = winreg.QueryValueEx(key, downloads_guid)[0]
-            return location
-        else:
-            return os.path.join(os.path.expanduser("~"), "downloads")
+def get_download_path():
+    if os.name == "nt":
+        import winreg
+        sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
+        downloads_guid = '{374DE290-123F-4565-9164-39C4925E467B}'
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
+            location = winreg.QueryValueEx(key, downloads_guid)[0]
+        return location
+    else:
+        return os.path.join(os.path.expanduser("~"), "downloads")
 
 
-    currentDirectory = os.getcwd()
-    cryxFolder = currentDirectory + "\cryxFolder"
-    cryxFolder_Exist = os.path.exists(cryxFolder)
-    encryptFile = cryxFolder + "\cryX-encrypted.txt"
-    encryptFile_Exist = os.path.exists(encryptFile)
-    downloadsFolder = get_download_path()
-    file_in_downloadsFolder = downloadsFolder + "\cryX-encrypted.txt"
-    file_in_downloadsFolder_Exist = os.path.exists(file_in_downloadsFolder)
+downloadsFolder = get_download_path()
+file_in_downloadsFolder = downloadsFolder + "\cryX-encrypted.txt"
+file_in_downloadsFolder_Exist = os.path.exists(file_in_downloadsFolder)
+
+active = True
+while active == True:
+
     downloadsMode = False
 
     mainSelection = input("<< (～￣▽￣)～ What do you wanna do? (C/S/D) : ")
@@ -89,14 +91,18 @@ while Exit == False :
                 print(">>（￣︶￣）Your encrypted text is:", encryptedText)
             elif (shift < 1) :
                 print("ERROR: The shift number can't be 0 or lower （︶^︶）") 
+
+            if cryxFolder_Exist == True :
+                cryxFile("cryX-encrypted.txt", "w+", encryptedText, shift)
+                print('// The file "cryX-encrypted.txt" has been created in', currentDirectory)
                     
             if cryxFolder_Exist == False :    
                 os.makedirs(cryxFolder)
-                print('// The folder "cryxFolder" has been created')
                 cryxFolder_Exist = True
-            if cryxFolder_Exist == True :
+                if cryxFolder_Exist == True :
+                    print('// The folder "cryxFolder" has been created')
                     cryxFile("cryX-encrypted.txt", "w+", encryptedText, shift)
-                    print('// The file "cryX-encrypted.txt" has been created in', currentDirectory)
+                    print('// The file "cryX-encrypted.txt" has been created')
 
         if cryxSelection == "D":        
             encrypted_text = input("<< Encrypted Text: ")
@@ -174,6 +180,6 @@ while Exit == False :
         shutil.rmtree(cryxFolder)
         print(">> I deleted the cryxFolder for you ( •̀ ω •́ )✧")
     
-    if(mainSelection == "Exit"):
+    if (mainSelection == "Exit"):
         print(">> Bye~")
-        Exit = True
+        active = False

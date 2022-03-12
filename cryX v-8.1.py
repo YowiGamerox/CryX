@@ -172,6 +172,9 @@ elif (mainSelection == "C") :
     if (emailSelection == "N") :
         print(">> (≧∇≦)ﾉ Okay, have a nice day!")
 
+    input()
+
 if (mainSelection == "D") :
     shutil.rmtree(cryxFolder)
     print(">> I deleted the cryxFolder for you ( •̀ ω •́ )✧")
+    input()
